@@ -4,7 +4,7 @@
   var app = angular.module('dtmftrainer', []);
   var keys = [1,2,3,4,5,6,7,8,9,0,'A','B','C','D','*','#'];
   app.controller('main', ['$scope', 'audio_player', function ($s, audio_player) {
-    $s.cats = "Cats!";
+    $s.keys = keys;
     $s.keypad = [['1', '2', '3', 'A'], ['4', '5', '6', 'B'], ['7', '8', '9', 'C'], ['*', '0', '#', 'D']];
     $s.checkedKeys = {};
     $s.playTone = function(key) {
@@ -18,11 +18,25 @@
       Object.keys($s.checkedKeys).forEach((key) => $s.checkedKeys[key] ? checked.push(key) : angular.noop());
       return checked;
     };
+    $s.massCheck = function(state, keys) {
+      keys.forEach((key) => {
+        $s.checkedKeys[key.toString()] = state;
+      });
+    };
+
+    $s.challengeActive = false;
+    $s.challengeLength = 4;
 
     $s.challengeGenerate = function() {
+      var checked = $s.currentlyChecked();
+      if (checked.length === 0) {
+        window.alert("You have to select some keys first!");
+        return;
+      }
+
       $s.challengeCheckResult = "";
       $s.challengeAttempt = "";
-      var checked = $s.currentlyChecked();
+      $s.challengeActive = true;
       var challenge = [];
       while (challenge.length < $s.challengeLength) {
         challenge.push(checked[Math.floor(Math.random()*checked.length)]);

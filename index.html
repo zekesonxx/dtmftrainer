@@ -15,31 +15,40 @@
         </td>
       </tr>
     </table>
-
     <span>
-      <strong>Checked: </strong> {{currentlyChecked().join(', ')}}
+      <strong>Checked: </strong> {{currentlyChecked().join(', ')}}<br/>
+      <strong>Check:</strong>
+      <span ng-click="massCheck(true, [1,5,9])" class="clickable">Easy (1, 5, 9)</span>,
+      <span ng-click="massCheck(true, [1,2,3,4,5,6,7,8,9,0])" class="clickable">Numbers</span>,
+      <span ng-click="massCheck(true, [1,2,3,4,5,6,7,8,9,'*','#'])" class="clickable">Common</span>,
+      <span ng-click="massCheck(true, keys)" class="clickable">All</span>,
+      <span ng-click="massCheck(false, keys)" class="clickable">None (reset)</span>
     </span>
 
     <form ng-submit='playSeries(number)'>
       <b>Play a series of keys: </b>
       <input type='text' ng-model='number' />
-      <input type="submit" id="submit" value="Submit" />
+      <input type="submit" id="submit" value="Play" />
     </form>
 
     <hr/>
 
     <h2>Test Your Skills</h2>
     <p>
-      <strong>Length:</strong> <input type='number' ng-model='challengeLength' value="4" min="1"/>
-      <button ng-click="challengeGenerate()">Go!</button>
-      <hr/>
-      <span>
-        <b>Challenge:</b>
-        <button ng-click="playSeries(challengeCurrent)">Listen</button>
-
-        <input type='text' ng-model='challengeAttempt' />
-        <button ng-click="challengeCheck()">Check</button>
-        <span ng-if="challengeCheckResult.length > 0">{{challengeCheckResult}}</span>
+      <span ng-if="!challengeActive">
+        <form ng-submit="challengeGenerate()" ng-show="!challengeActive">
+          <strong>Length:</strong> <input type='number' ng-model='challengeLength' value="4" min="1"/>
+          <input type="submit" id="submit" value="Go!" />
+        </form>
+      </span>
+      <span ng-show="challengeActive">
+        <form ng-submit="challengeCheck()">
+          <b>Challenge:</b>
+          <button ng-click="playSeries(challengeCurrent)" type="button">Listen</button>
+          <input type='text' ng-model='challengeAttempt' />
+          <input type="submit" id="submit" value="Check" />
+          <span ng-if="challengeCheckResult.length > 0">{{challengeCheckResult}}</span>
+        </form>
       </span>
     </p>
   </body>

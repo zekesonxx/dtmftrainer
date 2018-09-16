@@ -20,7 +20,7 @@ a {
   -ms-user-select: none;
   user-select: none;
 }
-.keypad .clickable {
+.clickable {
   cursor: pointer;
 }
 
