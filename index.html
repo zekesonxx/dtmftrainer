@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html ng-app="dtmftrainer">
+  <head>
+    <title>DTMF Trainer</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.2/angular.min.js"></script>
+    <script src="/trainer.js"></script>
+  </head>
+  <body ng-controller="main">
+    <h2>DTMF Trainer</h2>
+    <table class='keypad'>
+      <tr ng-repeat='row in keypad'>
+        <td ng-repeat='key in row'><span class="clickable" ng-click='playTone(key)'>{{key}}</span><br/>
+          <input type="checkbox" ng-model='checkedKeys[key]' ng-change='checkMe()'/>
+        </td>
+      </tr>
+    </table>
+
+    <span>
+      <strong>Checked: </strong> {{currentlyChecked().join(', ')}}
+    </span>
+
+    <form ng-submit='playSeries(number)'>
+      <b>Play a series of keys: </b>
+      <input type='text' ng-model='number' />
+      <input type="submit" id="submit" value="Submit" />
+    </form>
+
+    <hr/>
+
+    <h2>Test Your Skills</h2>
+    <p>
+      <strong>Length:</strong> <input type='number' ng-model='challengeLength' value="4" min="1"/>
+      <button ng-click="challengeGenerate()">Go!</button>
+      <hr/>
+      <span>
+        <b>Challenge:</b>
+        <button ng-click="playSeries(challengeCurrent)">Listen</button>
+
+        <input type='text' ng-model='challengeAttempt' />
+        <button ng-click="challengeCheck()">Check</button>
+        <span ng-if="challengeCheckResult.length > 0">{{challengeCheckResult}}</span>
+      </span>
+    </p>
+  </body>
+</html>
